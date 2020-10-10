@@ -1,0 +1,19 @@
+POST http://localhost:5000/api/user/create HTTP/1.1
+content-type: application/json
+
+{
+    "username": "john",
+    "email": "john234@gmail.com",
+    "password": "123qwer"
+}
+
+
+###
+
+POST http://localhost:5000/api/room/create HTTP/1.1
+content-type: application/json
+
+{
+    "roomName": "belajar",
+    "member": 5
+}
