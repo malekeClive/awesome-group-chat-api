@@ -10,7 +10,13 @@ const socket = ( server ) => {
     });
 
     socket.on('chat', res => {
-      io.in(res.roomId).emit('chat-message', { name: res.name, msg: res.msg });
+      console.log(res);
+      io.in(res.roomId).emit('chat-message', { 
+        roomId: res.roomId, 
+        uId: res.uId, 
+        name: res.name, 
+        msg: res.msg 
+      });
     })
 
     // broadcast when user connect to other users except itself

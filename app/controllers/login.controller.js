@@ -10,7 +10,7 @@ exports.login = (req, res) => {
 
   const { email, password } = req.body;
 
-  sql.query("SELECT email, password FROM user WHERE email = ? AND password = ?", [email, password], (err, data) => {
+  sql.query("SELECT user_id, username, email FROM user WHERE email = ? AND password = ?", [email, password], (err, data) => {
     if (err) {
       res.status(402).send({
         status: "ERROR",
