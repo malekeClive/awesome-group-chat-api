@@ -1,9 +1,10 @@
 const socketio    = require('socket.io');
-let counter = 0
 const socket = ( server ) => {
   const io = socketio(server);
   io.on('connection', socket => {
-    console.log("ads", counter += 1);
+    socket.on('test', res => {
+      console.log("+++++++++", res);
+    });
 
     socket.on('roomId', res => {
       socket.join(res.roomId).broadcast.emit('message', 'A user has joined the chat');

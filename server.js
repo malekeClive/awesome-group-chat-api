@@ -2,6 +2,7 @@ const app         = require('express')();
 const http        = require('http');
 const cors        = require('cors');
 const bodyParser  = require('body-parser');
+require("dotenv").config();
 
 const api = require('./app/routes/routes');
 const socket = require('./app/socket');
@@ -18,6 +19,6 @@ api(app);
 socket(server);
 
 port = process.env.PORT || 5000;
-server.listen(port, () => {
+server.listen(port, process.env.HOST, () => {
   console.log(`API started on: ${ port }`);
 });

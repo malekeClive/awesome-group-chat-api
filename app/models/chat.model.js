@@ -27,7 +27,7 @@ Chat.create = async (newChat, result) => {
   }
 }
 
-Chat.getAll = userId => {
+const getAll = userId => {
   try {
     const uId = userId[0].user_id;
     const query = promisify(sql.query).bind(sql);
@@ -38,4 +38,4 @@ Chat.getAll = userId => {
   }
 }
 
-module.exports = Chat;
+module.exports = { Chat, getAll };

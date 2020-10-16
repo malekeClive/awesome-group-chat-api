@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const Chat = require('../models/chat.model');
+const { Chat, getAll } = require('../models/chat.model');
 const User = require('../models/user.model');
 
 exports.create = async (req, res) => {
@@ -39,7 +39,7 @@ exports.getAll = async (req, res) => {
   try {
     const getUserData = jwt.verify(req.headers.authorization.split(' ')[1], 'THISISMUSTBESECRET');
     const userId      = await User.find(getUserData.data[0].email);
-    const result      = await Chat.getAll(userId);
+    const result      = await getAll(userId);
 
     const newRooms = result.map(room => {
       return {
