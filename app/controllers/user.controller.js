@@ -1,14 +1,15 @@
 const User = require('../models/user.model');
 
 exports.create = (req, res) => {
+
+  const { username, email, password } = req.body;
   // validate request
-  if (!req.body) {
+  if (!username || !email || !password) {
     res.status(400).send({
       message: "Content cannot be empty!"
     });
+    return;
   }
-
-  const { username, email, password } = req.body;
 
   // Create user
   const user = new User({
@@ -27,6 +28,4 @@ exports.create = (req, res) => {
       res.send(data);
     }
   });
-
-  console.log("=====================");
 }

@@ -1,6 +1,4 @@
-const jwt = require('jsonwebtoken');
-const { Chat, getAll } = require('../models/chat.model');
-const User = require('../models/user.model');
+const Chat = require('../models/chat.model');
 
 exports.create = async (req, res) => {
   // validate body
@@ -9,16 +7,14 @@ exports.create = async (req, res) => {
       message: "Cannot be empty!"
     });
   }
-
-  const getUserData = jwt.verify(req.headers.authorization.split(' ')[1], 'THISISMUSTBESECRET');
+  
+  const userId  = res.locals.user.user_id;
 
   try {
-    const userId = await User.find(getUserData.data[0].email);
-
     const form = new Chat({
       roomName: req.body.roomName,
       member: 10,
-      userId: userId[0].user_id,
+      userId: userId,
       roleId: 1
     });
 
@@ -35,11 +31,35 @@ exports.create = async (req, res) => {
   }
 }
 
-exports.getAll = async (req, res) => {
+exports.joinNewRoom = async (req, res) => {
   try {
-    const getUserData = jwt.verify(req.headers.authorization.split(' ')[1], 'THISISMUSTBESECRET');
-    const userId      = await User.find(getUserData.data[0].email);
-    const result      = await getAll(userId);
+    // validation 
+    const userId = res.locals.user.user_id;
+    const data = req.body;
+    if (!data.roomId) {
+      res.status(400).send({
+        message: "Cannot be empty!"
+      });
+    }
+
+    const result = await Chat.joinRoom(userId, data.roomId, 2);
+
+    res.status(200).send({
+      status: "OK",
+      message: result
+    });
+  } catch (error) {
+    res.status(406).send({
+      status: "FAILED",
+      message: error
+    });
+  }
+}
+
+exports.getAllUser = async (req, res) => {
+  try {
+    const userId      = res.locals.user.user_id;
+    const result      = await Chat.getAll(userId);
 
     const newRooms = result.map(room => {
       return {
