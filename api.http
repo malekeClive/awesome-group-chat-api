@@ -8,6 +8,16 @@ content-type: application/json
 
 ###
 
+POST http://127.0.0.1:5000/ HTTP/1.1
+content-type: application/json
+
+{
+    "username": "john"
+}
+
+
+###
+
 POST http://192.168.2.241/api/room/create HTTP/1.1
 content-type: application/json
 

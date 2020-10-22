@@ -1,5 +1,4 @@
-const sql = require('../../db');
-const { promisify } = require('util');
+const { create, find } = require('../Repositories/userRepository')
 
 // user object constructor
 const User = function(user) {
@@ -8,23 +7,26 @@ const User = function(user) {
   this.password   = user.password;
 }
 
-User.create = (newUser, result) => {
-  sql.query("INSERT INTO user SET ?", newUser, (err, res) => {
-    if (err) {
-      console.log(`Error ${err}`);
-      result(err, null);
-      return
+User.create = async newUser => {
+  try {
+    const user = await create(newUser);
+    return user;
+  } catch (error) {
+    if (error.code === 'ER_DUP_ENTRY') {
+      return {
+        error: true, 
+        code: 1062,
+        message: "email already registered to database" 
+      };
     }
-
-    result(null, { id: res.insertId, ...newUser });
-  })
+    return error;
+  }
 }
 
-User.find = async email => {
+User.find = async userId => {
   try {
-    const query   = promisify(sql.query).bind(sql);
-    const userId  = await query("SELECT user_id FROM user WHERE email = ?", email);
-    return userId;
+    const user = await find(userId);
+    return user;
   } catch (error) {
     return error;
   }
