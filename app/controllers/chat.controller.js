@@ -10,22 +10,16 @@ exports.create = async (req, res) => {
   
   const userId  = res.locals.user.user_id;
 
+  const form = new Chat({
+    roomName: req.body.roomName,
+    member: 10,
+    userId: userId,
+    roleId: 1
+  });
+
   try {
-    const form = new Chat({
-      roomName: req.body.roomName,
-      member: 10,
-      userId: userId,
-      roleId: 1
-    });
-
-    Chat.create(form, (err, data) => {
-      if (err) {
-        console.log("ERROR: ", err);
-      } else {
-        res.status(200).send(data);
-      }
-    });
-
+    const room = await Chat.create(form);
+    console.log(room);
   } catch (error) {
     console.log(error);
   }
@@ -56,10 +50,10 @@ exports.joinNewRoom = async (req, res) => {
   }
 }
 
-exports.getAllUser = async (req, res) => {
+exports.selectAll = async (req, res) => {
   try {
     const userId      = res.locals.user.user_id;
-    const result      = await Chat.getAll(userId);
+    const result      = await Chat.selectAll(userId);
 
     const newRooms = result.map(room => {
       return {

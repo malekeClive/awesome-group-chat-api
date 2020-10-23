@@ -4,7 +4,8 @@ module.exports = async ( req, res, next ) => {
   try {
     const token         = req.headers.authorization.split(' ')[1];
     const decodedToken  = jwt.verify(token, 'THISISMUSTBESECRET');
-    const user        = decodedToken.data[0];
+    console.log(decodedToken);
+    const user          = decodedToken.user[0];
 
     if (!token) {
       throw new Error('Not authenticated');

@@ -15,6 +15,15 @@ content-type: application/json
     "username": "john"
 }
 
+###
+
+POST http://192.168.2.241:5000/api/user/find HTTP/1.1
+content-type: application/json
+
+{
+    "userId": "john@gmail.com"
+}
+
 
 ###
 

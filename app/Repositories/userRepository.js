@@ -9,7 +9,6 @@ const login = async ( email, password ) => {
   } catch (error) {
     return error;
   }
-
 }
 
 const create = async (newUser) => {
@@ -22,10 +21,10 @@ const create = async (newUser) => {
   }
 }
 
-const find = async () => {
+const find = async (userId) => {
   try {
     const query = promisify(sql.query).bind(sql);
-    const user  = await query("SELECT user_id FROM user WHERE email = ?", email);
+    const user  = await query("SELECT email FROM user WHERE user_id = ? LIMIT 1", userId);
     return user;
   } catch (error) {
     return error;

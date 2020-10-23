@@ -15,7 +15,7 @@ User.create = async newUser => {
     if (error.code === 'ER_DUP_ENTRY') {
       return {
         error: true, 
-        code: 1062,
+        code: 406,
         message: "email already registered to database" 
       };
     }
@@ -26,6 +26,15 @@ User.create = async newUser => {
 User.find = async userId => {
   try {
     const user = await find(userId);
+    if (user.length === 0) {
+      const error = {
+        error: true,
+        code: 404,
+        message: "user not found"
+      }
+      throw error;
+    }
+
     return user;
   } catch (error) {
     return error;
