@@ -2,17 +2,20 @@ POST http://192.168.2.241:5000/api/user/create HTTP/1.1
 content-type: application/json
 
 {
-    "username": "john"
+    "username": "memento1",
+    "email": "memento23@gmail.com",
+    "password": "1234qwer"
 }
 
 
 ###
 
-POST http://127.0.0.1:5000/ HTTP/1.1
+POST http://192.168.2.241:5000/ HTTP/1.1
 content-type: application/json
 
 {
-    "username": "john"
+    "email": "",
+    "password": ""
 }
 
 ###
@@ -21,7 +24,7 @@ POST http://192.168.2.241:5000/api/user/find HTTP/1.1
 content-type: application/json
 
 {
-    "userId": "john@gmail.com"
+    "userId": 1
 }
 
 

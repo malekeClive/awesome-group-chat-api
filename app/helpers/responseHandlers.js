@@ -4,7 +4,7 @@ const errorFormat = (msg) => ({
   data: []
 });
 
-const successFormat = (msg, result) => ({
+const successFormat = (msg, result="") => ({
   status: "OK",
   message: msg,
   data: result

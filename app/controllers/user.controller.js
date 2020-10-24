@@ -20,21 +20,13 @@ exports.create = async (req, res) => {
   try {
     const result = await User.create(user);
 
-    if (result.error) {
-      throw result;
-    }
+    if (result.error) throw result;
 
-    const newUser = {
-      userId: result.insertId,
-      username: user.username
-    }
+    const newUser = { userId: result.insertId, username: user.username }
 
     res.status(200).send(successFormat("User created", newUser));
-
   } catch (error) {
-    if (error.code === 406) {
-      res.status(error.code).send(errorFormat(error.message));
-    }
+    if (error.code === 406) res.status(error.code).send(errorFormat(error.message));
 
     res.status(500).send(errorFormat(error.message));
   }
@@ -43,15 +35,13 @@ exports.create = async (req, res) => {
 exports.find = async (req, res) => {
   const { userId } = req.body;
 
-  if (!userId) {
-    res.status(400).send(errorFormat("Content cannot be empty!"));
-  }
+  if (!userId) res.status(400).send(errorFormat("Content cannot be empty!"));
 
   try {
     const result = await User.find(userId);
-    if (result.error) {
-      throw result;
-    }
+
+    if (result.error) throw result;
+    
     res.status(200).send(successFormat("User founded", result));
   } catch (error) {
     res.status(404).send(errorFormat(error.message));

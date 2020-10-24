@@ -5,7 +5,7 @@ const login = require('../controllers/login.controller');
 
 // Routes directory
 const user = require('../routes/user.routes');
-const chat = require('../routes/chat.routes');
+const room = require('../routes/room.routes');
 
 const routes = app => {
   // login
@@ -15,7 +15,7 @@ const routes = app => {
   app.use('/api/user', user);
 
   // Chat routes
-  app.use('/api/chat', chat);
+  app.use('/api/chat', room);
 }
 
 module.exports = routes;
