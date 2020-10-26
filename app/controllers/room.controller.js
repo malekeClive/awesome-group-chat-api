@@ -33,9 +33,15 @@ exports.joinNewRoom = async (req, res) => {
     const room    = { user_id: userId.toString() , room_id: data.roomId, role_id: '2' }
     const result  = await Room.joinRoom(room);
 
+    if (result.error) throw result;
+
     res.status(200).send(successFormat("Successfully joined new room", result));
   } catch (error) {
-    res.status(406).send(errorFormat(error));
+    console.log(error.code);
+    if (error.code === 406) res.status(error.code).send(errorFormat(error.message));
+
+    console.log("Asdasdqe");
+    res.status(404).send(errorFormat(error));
   }
 }
 

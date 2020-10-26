@@ -1,11 +1,13 @@
-const errorFormat = (msg) => ({
+const errorFormat = (code, msg) => ({
   status: "ERROR",
+  code: code,
   message: msg,
   data: []
 });
 
-const successFormat = (msg, result="") => ({
+const successFormat = (code, msg, result="") => ({
   status: "OK",
+  code: code,
   message: msg,
   data: result
 });

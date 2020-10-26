@@ -3,19 +3,29 @@ const { login } = require('../Repositories/userRepository');
 const { errorFormat } = require('../helpers/responseHandlers');
 
 exports.login = async (req, res) => {
-  if (!req.body) res.status(400).send(errorFormat("Cannot be null"));
-
-  const { email, password } = req.body;
   try {
+    const { email, password } = req.body;
+    console.log(!req.body);
+    if (!req.body) {
+      throw errorFormat(406, "Empty");
+    } else if (email.length === 0 || password.length === 0) {
+      throw errorFormat(400, "Content cannot be null");
+    }
+    
     const user = await login(email, password);
     
     if (user.length === 0) {
-      res.status(406).send(errorFormat("Invalid email or password"));
+      throw errorFormat(422, "Invalid email or password");
     } else {
       const token = jwt.sign({ user }, 'THISISMUSTBESECRET');
       res.status(200).send({ status: "OK", message: "Logged in", auth: token });
     }
   } catch (error) {
-      res.status(402).send(errorFormat(error.message));
+    if (!error.code) {
+      res.status(500).send(errorFormat(error.message));
+      return;
+    }
+
+    res.status(error.code).send(errorFormat(error.code, error.message));
   }
 }

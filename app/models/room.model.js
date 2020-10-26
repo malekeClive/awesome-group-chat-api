@@ -22,7 +22,6 @@ Room.create = async (newRoom) => {
 Room.joinRoom = async (room) => {
   try {
     const result = await join(room);
-    // ERRRRRRRRRRRRRRRRRRRR BELUM KEHANDLE
     if (result.code === 'ER_NO_REFERENCED_ROW_2') {
       throw {
         error: true, 
@@ -31,7 +30,7 @@ Room.joinRoom = async (room) => {
       };
     }
     
-    return result
+    return result;
   } catch (error) {
     return error;
   }
