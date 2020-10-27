@@ -22,10 +22,6 @@ const create = async newRoom => {
 const join = async (room) => {
   try {
     const query = promisify(sql.query).bind(sql);
-    const isDataExist = await query('SELECT user_id, room_id FROM user_room_role WHERE user_id = ? AND room_id = ? LIMIT 1', [ room.user_id, room.room_id ]);
-
-    if (isDataExist.length > 0) throw('You already joined!');
-    
     await query('INSERT INTO user_room_role (user_id, room_id, role_id) VALUES (?, ?, ?)', [room.user_id, room.room_id, room.role_id]);
     
     const result = { roomId: room.room_id };
@@ -35,4 +31,13 @@ const join = async (room) => {
   }
 }
 
-module.exports = { create, join };
+const selectUserInRoom = async (userId, roomId) => {
+  try {
+    const query = promisify(sql.query).bind(sql);
+    return await query('SELECT user_id, room_id FROM user_room_role WHERE user_id = ? AND room_id = ? LIMIT 1', [ userId, roomId ]);
+  } catch (error) {
+    return error;
+  }
+}
+
+module.exports = { create, join, selectUserInRoom };

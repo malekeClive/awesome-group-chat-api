@@ -1,9 +1,15 @@
 const Room = require('../models/room.model');
-const { errorFormat, successFormat } = require('../helpers/responseHandlers');
+const { errorFormat, successFormat } = require('../helpers/clientResponseHandlers');
 
 exports.create = async (req, res) => {
+  const { roomName } = req.body;
+
   // validate body
-  if (!req.body) res.status(400).send(errorFormat("Content cannot be empty!"));
+  if (!roomName) {
+    throw errorFormat(406, "Empty");
+  } else if (roomName.length === 0) {
+    throw errorFormat(400, "Content cannot be empty!");
+  }
   
   const userId  = res.locals.user.user_id;
 
@@ -16,39 +22,49 @@ exports.create = async (req, res) => {
   
   try {
     const room = await Room.create(form);
-    res.status(200).send(successFormat("Successfully created new room", room));
+    res.status(200).send(successFormat(200, "Successfully created new room", room));
   } catch (error) {
-    res.status(406).send(errorFormat(error));
+    if (!error.code) {
+      res.status(500).send(errorFormat(500, error.message));
+      return;
+    }
+
+    res.status(error.code).send(errorFormat(error.code, error));
   }
 }
 
 exports.joinNewRoom = async (req, res) => {
   try {
     // validation 
-    const userId  = res.locals.user.user_id;
-    const data    = req.body;
+    const userId      = res.locals.user.user_id;
+    const { roomId }  = req.body;
 
-    if (!data.roomId) res.status(400).send(errorFormat("Content cannot be empty!"));
+    if (!roomId) {
+      throw errorFormat(406, "Empty");
+    } else if (roomId.length === 0) {
+      throw errorFormat(400, "Content cannot be empty!");
+    }
 
-    const room    = { user_id: userId.toString() , room_id: data.roomId, role_id: '2' }
-    const result  = await Room.joinRoom(room);
+    const room    = { user_id: userId.toString() , room_id: roomId, role_id: '2' }
+    const result  = await Room.joinRoom(userId, room);
 
     if (result.error) throw result;
 
     res.status(200).send(successFormat("Successfully joined new room", result));
   } catch (error) {
-    console.log(error.code);
-    if (error.code === 406) res.status(error.code).send(errorFormat(error.message));
+    if (error.code === 406) {
+      res.status(error.code).send(errorFormat(error.message));
+      return;
+    } 
 
-    console.log("Asdasdqe");
     res.status(404).send(errorFormat(error));
   }
 }
 
 exports.selectAll = async (req, res) => {
   try {
-    const userId      = res.locals.user.user_id;
-    const result      = await Room.selectAll(userId);
+    const userId  = res.locals.user.user_id;
+    const result  = await Room.selectAll(userId);
 
     const newRooms = result.map(room => {
       return {
@@ -58,7 +74,8 @@ exports.selectAll = async (req, res) => {
       }
     });
 
-    res.status(200).send(successFormat("get all user room", newRooms));
+    console.log(newRooms);
+    res.status(200).send(successFormat(200, "get all user room", newRooms));
   } catch (error) {
     res.status(406).send(errorFormat(error));
   }

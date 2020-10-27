@@ -1,4 +1,5 @@
-const { create, find } = require('../Repositories/userRepository')
+const { create, find } = require('../Repositories/userRepository');
+const { modelErrorHandler } = require('../helpers/serverResponseHandlers');
 
 // user object constructor
 const User = function(user) {
@@ -9,16 +10,11 @@ const User = function(user) {
 
 User.create = async newUser => {
   try {
-    const user = await create(newUser);
-    return user;
+    return await create(newUser);
   } catch (error) {
     if (error.code === 'ER_DUP_ENTRY') {
-      return {
-        error: true, 
-        code: 406,
-        message: "email already registered to database" 
-      };
-    }
+      return modelErrorHandler(406, "Email already registered to database")
+    } 
     return error;
   }
 }
@@ -26,14 +22,7 @@ User.create = async newUser => {
 User.find = async userId => {
   try {
     const user = await find(userId);
-    if (user.length === 0) {
-      const error = {
-        error: true,
-        code: 404,
-        message: "user not found"
-      }
-      throw error;
-    }
+    if (user.length === 0) throw modelErrorHandler(404, "User not found");
 
     return user;
   } catch (error) {

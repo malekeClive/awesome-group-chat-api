@@ -1,13 +1,13 @@
 const User = require('../models/user.model');
-const { errorFormat, successFormat } = require('../helpers/responseHandlers');
+const { errorFormat, successFormat } = require('../helpers/clientResponseHandlers');
 
 exports.create = async (req, res) => {
   try {
     const { username, email, password } = req.body;
     // validate request
-    if (!req.body) {
+    if (!username || !email || !password) {
       throw errorFormat(406, "Empty");
-    } else if (!username || !email || !password) {
+    } else if (username.length === 0 || email.length === 0 || password.length === 0) {
       throw errorFormat(400, "Content cannot be empty!")
     } 
   
@@ -40,7 +40,11 @@ exports.create = async (req, res) => {
 exports.find = async (req, res) => {
   const { userId } = req.body;
 
-  if (!userId) throw errorFormat(400, "Content cannot be empty!");
+  if (!userId) {
+    throw errorFormat(406, "Empty");
+  } else if (userId.length === 0) {
+    throw errorFormat(400, "Content cannot be empty!");
+  } 
 
   try {
     const result = await User.find(userId);
