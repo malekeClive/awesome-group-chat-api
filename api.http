@@ -1,38 +1,34 @@
-POST http://192.168.2.241:5000/api/user/create HTTP/1.1
+POST http://127.0.0.1:5000/api/user/create HTTP/1.1
 content-type: application/json
 
 {
-    "username": "memento2",
-
-}
-
-
-###
-
-POST http://192.168.2.241:5000/ HTTP/1.1
-content-type: application/json
-
-{
-    "email": "clive@gmail.com",
+    "username": "lee",
+    "email": "leemineralee@gmail.com",
     "password": "1234qwer"
 }
 
+
 ###
 
-POST http://192.168.2.241:5000/api/user/find HTTP/1.1
+POST http://127.0.0.1:5000/ HTTP/1.1
 content-type: application/json
 
 {
-    "userId": 1
+    "email": "john@gmail.com",
+    "password": "1234qwer"
 }
 
 
 ###
 
-POST http://192.168.2.241/api/room/create HTTP/1.1
+POST http://127.0.0.1/api/room/create HTTP/1.1
 content-type: application/json
 
 {
     "roomName": "belajar",
     "member": 5
 }
+
+###
+GET http://127.0.0.1:5000/api/chat/getAll HTTP/1.1
+content-type: application/json

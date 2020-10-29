@@ -1,6 +1,6 @@
 const sql = require('../../db');
 const { promisify } = require('util');
-const { create, join, selectUserInRoom } = require('../Repositories/roomRepository');
+const { create, join, selectUserInRoom, selectRooms } = require('../Repositories/roomRepository');
 const { modelErrorHandler } = require('../helpers/serverResponseHandlers');
 
 // Room object constructor
@@ -11,7 +11,7 @@ const Room = function(room) {
   this.member     = room.member;
 }
 
-Room.create = async (newRoom) => {
+Room.create = async newRoom => {
   try {
     return await create(newRoom);
   } catch (error) {
@@ -35,8 +35,7 @@ Room.joinRoom = async (userId, room) => {
 
 Room.selectAll = async userId => {
   try {
-    const query = promisify(sql.query).bind(sql);
-    return await query('SELECT room.room_id, room.room_name, room.member FROM user_room_role INNER JOIN room ON room.room_id = user_room_role.room_id AND user_room_role.user_id = ?;', userId);
+    return await selectRooms(userId);
   } catch (error) {
     return error;
   }

@@ -31,6 +31,7 @@ const join = async (room) => {
   }
 }
 
+// check if user joined room
 const selectUserInRoom = async (userId, roomId) => {
   try {
     const query = promisify(sql.query).bind(sql);
@@ -40,4 +41,13 @@ const selectUserInRoom = async (userId, roomId) => {
   }
 }
 
-module.exports = { create, join, selectUserInRoom };
+const selectRooms = async (userId) => {
+  try {
+    const query = promisify(sql.query).bind(sql);
+    return await query('SELECT room.room_id, room.room_name, room.member FROM user_room_role INNER JOIN room ON room.room_id = user_room_role.room_id AND user_room_role.user_id = ?;', userId);
+  } catch (error) {
+    return error;
+  }
+}
+
+module.exports = { create, join, selectUserInRoom, selectRooms };
