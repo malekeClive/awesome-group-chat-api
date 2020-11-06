@@ -1,4 +1,6 @@
 const socketio    = require('socket.io');
+
+
 const socket = ( server ) => {
   const io = socketio(server);
   io.on('connection', socket => {
@@ -12,10 +14,12 @@ const socket = ( server ) => {
 
     socket.on('chat', res => {
       console.log(res);
+      // insert data to chat table in database
+
       io.in(res.roomId).emit('chat-message', { 
         roomId: res.roomId, 
         uId: res.uId, 
-        name: res.name, 
+        // name: res.name, 
         msg: res.msg 
       });
     })
