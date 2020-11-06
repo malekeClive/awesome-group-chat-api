@@ -18,7 +18,6 @@ content-type: application/json
     "password": "1234qwer"
 }
 
-
 ###
 
 POST http://127.0.0.1/api/room/create HTTP/1.1
