@@ -1,5 +1,3 @@
-const sql = require('../../db');
-const { promisify } = require('util');
 const { create, join, selectUserInRoom, selectRooms } = require('../Repositories/roomRepository');
 const { modelErrorHandler } = require('../helpers/serverResponseHandlers');
 

@@ -1,4 +1,5 @@
 const socketio    = require('socket.io');
+const Chat = require('./models/chat.model');
 
 
 const socket = ( server ) => {
@@ -13,15 +14,15 @@ const socket = ( server ) => {
     });
 
     socket.on('chat', res => {
-      console.log(res);
-      // insert data to chat table in database
-
-      io.in(res.roomId).emit('chat-message', { 
-        roomId: res.roomId, 
-        uId: res.uId, 
-        // name: res.name, 
-        msg: res.msg 
-      });
+        // insert data to chat table in database
+        Chat.create(res);
+  
+        io.in(res.roomId).emit('chat-message', { 
+          roomId: res.roomId, 
+          userId: res.uId, 
+          // name: res.name, 
+          description: res.msg 
+        });
     })
 
     // broadcast when user connect to other users except itself

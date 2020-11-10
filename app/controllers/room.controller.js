@@ -1,6 +1,5 @@
 const Room = require('../models/room.model');
 const { errorFormat, successFormat } = require('../helpers/clientResponseHandlers');
-const { use } = require('../routes/user.routes');
 
 exports.create = async (req, res) => {
   const { roomName } = req.body;
@@ -65,7 +64,6 @@ exports.joinNewRoom = async (req, res) => {
 exports.selectAll = async (req, res) => {
   try {
     const userId  = res.locals.user.user_id;
-    console.log(userId);
     const result  = await Room.selectAll(userId);
 
     const newRooms = result.map(room => {
@@ -76,7 +74,6 @@ exports.selectAll = async (req, res) => {
       }
     });
 
-    console.log(newRooms);
     res.status(200).send(successFormat(200, "get all user room", newRooms));
   } catch (error) {
     res.status(406).send(errorFormat(error));
