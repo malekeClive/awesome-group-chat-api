@@ -6,11 +6,11 @@ exports.getChatById = async (req, res) => {
     const userId = res.locals.user.user_id;
     const result = await Chat.getChatById(userId);
 
-    console.log(result);
     const chats = result.map(chat => {
       return {
         roomId: chat.room_id,
         userId: chat.user_id,
+        username: chat.username,
         description: chat.description
       }
     });

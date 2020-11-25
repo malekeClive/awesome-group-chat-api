@@ -5,24 +5,22 @@ const Chat = require('./models/chat.model');
 const socket = ( server ) => {
   const io = socketio(server);
   io.on('connection', socket => {
-    socket.on('test', res => {
-      console.log("+++++++++", res);
-    });
-
     socket.on('roomId', res => {
       socket.join(res.roomId).broadcast.emit('message', 'A user has joined the chat');
     });
 
     socket.on('chat', res => {
         // insert data to chat table in database
-        Chat.create(res);
-  
-        io.in(res.roomId).emit('chat-message', { 
-          roomId: res.roomId, 
-          userId: res.uId, 
-          // name: res.name, 
-          description: res.msg 
+        const chat = new Chat({
+          roomId: res.roomId,
+          userId: res.userId,
+          name: res.name,
+          description: res.description,
         });
+        
+        Chat.create(chat);
+  
+        io.in(res.roomId).emit('chat-message', chat);
     })
 
     // broadcast when user connect to other users except itself

@@ -4,6 +4,7 @@ const { modelErrorHandler } = require('../helpers/serverResponseHandlers');
 const Chat = function(chat) {
   this.room_id = chat.roomId;
   this.user_id = chat.userId;
+  this.username = chat.name;
   this.description = chat.description;
 }
 
