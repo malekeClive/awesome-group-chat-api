@@ -2,9 +2,9 @@ const { store, getChatByUserId }  = require('../Repositories/chatRepository');
 const { modelErrorHandler } = require('../helpers/serverResponseHandlers');
 
 const Chat = function(chat) {
-  this.room_id = chat.roomId;
-  this.user_id = chat.userId;
-  this.username = chat.name;
+  this.roomId = chat.roomId;
+  this.userId = chat.userId;
+  this.username = chat.username;
   this.description = chat.description;
 }
 

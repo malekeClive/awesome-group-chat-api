@@ -9,17 +9,17 @@ const socket = ( server ) => {
       socket.join(res.roomId).broadcast.emit('message', 'A user has joined the chat');
     });
 
-    socket.on('chat', res => {
+    socket.on('chat', async res => {
         // insert data to chat table in database
         const chat = new Chat({
           roomId: res.roomId,
           userId: res.userId,
-          name: res.name,
+          username: res.username,
           description: res.description,
         });
         
-        Chat.create(chat);
-  
+        await Chat.create(chat);
+
         io.in(res.roomId).emit('chat-message', chat);
     })
 

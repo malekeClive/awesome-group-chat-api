@@ -14,7 +14,7 @@ const getChatByUserId = async (userId) => {
 const store = async ( chat ) => {
   try {
     const query = promisify(sql.query).bind(sql);
-    return await query("INSERT INTO chat(room_id, user_id, description, username) VALUES(?,?,?,?) ", [chat.room_id, chat.user_id, chat.description, chat.username]);
+    return await query("INSERT INTO chat(room_id, user_id, description, username) VALUES(?,?,?,?) ", [chat.roomId, chat.userId, chat.description, chat.username]);
   } catch (error) {
     console.log(error);
     return error;
