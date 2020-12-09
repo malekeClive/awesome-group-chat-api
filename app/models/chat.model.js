@@ -2,10 +2,10 @@ const { store, getChatByUserId }  = require('../Repositories/chatRepository');
 const { modelErrorHandler } = require('../helpers/serverResponseHandlers');
 
 const Chat = function(chat) {
-  this.roomId = chat.roomId;
-  this.userId = chat.userId;
-  this.username = chat.username;
-  this.description = chat.description;
+  this.roomId       = chat.roomId;
+  this.userId       = chat.userId;
+  this.username     = chat.username;
+  this.description  = chat.description;
 }
 
 Chat.create = async (chat) => {

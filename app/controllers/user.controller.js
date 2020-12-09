@@ -4,6 +4,7 @@ const { errorFormat, successFormat } = require('../helpers/clientResponseHandler
 exports.create = async (req, res) => {
   try {
     const { username, email, password } = req.body;
+
     // validate request
     if (!username || !email || !password) {
       throw errorFormat(406, "Empty");
@@ -12,20 +13,20 @@ exports.create = async (req, res) => {
     } 
   
     // Create user
-    const user = new User({
+    const userForm = new User({
       username: username,
       email: email,
       password: password
     });
   
     // Save user in the database
-    const result = await User.create(user);
+    const rawUser = await User.create(userForm);
 
-    if (result.error) throw result;
+    if (rawUser.error) throw rawUser;
 
-    const newUser = { userId: result.insertId, username: user.username }
+    const user = { userId: result.insertId, username: user.username }
 
-    res.status(200).send(successFormat(200, "User created", newUser));
+    res.status(200).send(successFormat(200, "User created", user));
 
   } catch (error) {
     if (!error.code) {
@@ -47,11 +48,11 @@ exports.find = async (req, res) => {
   } 
 
   try {
-    const result = await User.find(userId);
+    const findUser = await User.find(userId);
 
-    if (result.error) throw result;
+    if (findUser.error) throw findUser;
     
-    res.status(200).send(successFormat("User founded", result));
+    res.status(200).send(successFormat("User founded", findUser));
   } catch (error) {
     if (!error.code) {
       res.status(500).send(errorFormat(error.message));

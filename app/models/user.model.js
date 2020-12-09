@@ -21,10 +21,10 @@ User.create = async newUser => {
 
 User.find = async userId => {
   try {
-    const user = await find(userId);
-    if (user.length === 0) throw modelErrorHandler(404, "User not found");
+    const findUserById = await find(userId);
+    if (findUserById.length === 0) throw modelErrorHandler(404, "User not found");
 
-    return user;
+    return findUserById;
   } catch (error) {
     return error;
   }

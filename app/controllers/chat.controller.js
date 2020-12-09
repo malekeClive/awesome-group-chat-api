@@ -4,9 +4,9 @@ const { errorFormat, successFormat } = require('../helpers/clientResponseHandler
 exports.getChatById = async (req, res) => {
   try {
     const userId = res.locals.user.user_id;
-    const result = await Chat.getChatById(userId);
+    const rawChatList = await Chat.getChatById(userId);
 
-    const chats = result.map(chat => {
+    const chatList = rawChatList.map(chat => {
       return {
         roomId: chat.room_id,
         userId: chat.user_id,
@@ -15,7 +15,7 @@ exports.getChatById = async (req, res) => {
       }
     });
 
-    res.status(200).send(successFormat(200, "get all chat", chats));
+    res.status(200).send(successFormat(200, "get all chat", chatList));
   } catch (error) {
     res.status(406).send(errorFormat(error));
   }

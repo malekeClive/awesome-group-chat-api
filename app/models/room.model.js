@@ -22,10 +22,10 @@ Room.joinRoom = async (userId, room) => {
     const isUserExist = await selectUserInRoom(userId, room.room_id);
     if (isUserExist.length > 0) throw modelErrorHandler(406, "You already joined");
 
-    const result  = await join(room);
-    if (result.code === 'ER_NO_REFERENCED_ROW_2') throw modelErrorHandler(422, "Room not found")
+    const joinRoom  = await join(room);
+    if (joinRoom.code === 'ER_NO_REFERENCED_ROW_2') throw modelErrorHandler(422, "Room not found")
     
-    return result;
+    return joinRoom;
   } catch (error) {
     return error;
   }
